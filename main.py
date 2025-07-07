@@ -1,30 +1,34 @@
+# main.py
 from flask import Flask
-import threading
-import time
 import requests
 
 app = Flask(__name__)
 
-def periodic_task():
-    while True:
-        print("📡 Making outbound request...")
-        try:
-            response = requests.get("https://httpbin.org/delay/3")  # waits 3 seconds
-            print("✅ Response received:", response.status_code)
-            response = requests.get("https://api.ipify.org")
-            print("✅ My public IP is:", response.text)
-        except Exception as e:
-            print("❌ Error making request:", e)
-        time.sleep(300)  # Wait 5 minutes (300 seconds)
+@app.route("/test-ip")
+def test_ip():
+    logs = []
 
-# Start the background task on app startup
-@app.before_first_request
-def start_background_thread():
-    thread = threading.Thread(target=periodic_task)
-    thread.daemon = True
-    thread.start()
+    # 1️⃣ Trigger a 3-second outbound call
+    try:
+        logs.append("📡 Starting 3‑second delay call...")
+        res = requests.get("https://httpbin.org/delay/3", timeout=10)
+        logs.append(f"✅ Delay call status: {res.status_code}")
+    except Exception as e:
+        logs.append(f"❌ Delay call failed: {e}")
 
-@app.route("/")
-def home():
-    return "Flask API is running and sending periodic outbound traffic every 5 mins."
+    # 2️⃣ Fetch your public IP via ipify
+    try:
+        res2 = requests.get("https://api.ipify.org", timeout=5)
+        ip = res2.text.strip()
+        print(f"Public IP: {ip}")
+        logs.append(f"✅ My public IP is: {ip}")
+    except Exception as e:
+        logs.append(f"❌ IP fetch failed: {e}")
 
+    # Return a brief summary and include all logs
+    summary = "\n".join(logs)
+    print(summary)
+    return summary.replace("\n", "<br>"), 200
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)
