@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.env
+venv/
+.vscode/
+test.json
+test1.txt
+dev/
