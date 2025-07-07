@@ -1,4 +1,5 @@
 substitutions:
+  _PROJECT_ID: "$PROJECT_ID"
   _REPO_NAME: "static-ip-test2"
   _SERVICE_NAME: "cloudrun-dev"
   _IMAGE: "image-cloudrun-dev2"
