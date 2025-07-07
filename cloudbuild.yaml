@@ -2,6 +2,7 @@ substitutions:
   _REPO_NAME: "static-ip-test2"
   _SERVICE_NAME: "cloudrun-dev"
   _IMAGE: "image-cloudrun-dev2"
+  _REGION: "asia-south1"  
 
 steps:
   # Step 1: Create the Artifact Registry repo (if it doesn't exist)
