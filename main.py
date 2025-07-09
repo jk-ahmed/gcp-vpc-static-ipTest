@@ -21,7 +21,7 @@ def test_ip():
         res2 = requests.get("https://api.ipify.org", timeout=5)
         ip = res2.text.strip()
         print(f"Public IP: {ip}")
-        logs.append(f"✅ My public IP is: {ip}")
+        logs.append(f"✅ --My public IP is: {ip}")
     except Exception as e:
         logs.append(f"❌ IP fetch failed: {e}")
 
